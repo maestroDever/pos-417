@@ -72,25 +72,25 @@
                     ></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="monday" v-model="selectedItem.monday" label="Monday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.monday" label="Monday"></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="tuesday" v-model="selectedItem.tuesday" label="Tuesday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.tuesday" label="Tuesday"></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="wednesday" v-model="selectedItem.wednesday" label="Wednesday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.wednesday" label="Wednesday"></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="thursday" v-model="selectedItem.thursday" label="Thursday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.thursday" label="Thursday"></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="friday" v-model="selectedItem.friday" label="Friday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.friday" label="Friday"></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="saturday" v-model="selectedItem.saturday" label="Saturday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.saturday" label="Saturday"></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-select :items="sunday" v-model="selectedItem.sunday" label="Sunday"></v-select>
+                    <v-select :items="employees" v-model="selectedItem.sunday" label="Sunday"></v-select>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { db, thisWeeksScheduleDates, scheduleCollection } from "@/fb";
+import { db, thisWeeksScheduleDates, scheduleCollection, employees } from "@/fb";
 import router from "@/router";
 import AdminNavdrawer from "@/components/Navdrawer/AdminNavdrawer";
 import format from "date-fns/format";
@@ -181,6 +181,7 @@ export default {
     modal: false,
     menu1: false,
     menu2: false,
+    employees: [],
     time: [
       "7:30AM - 5:30PM",
       "10:00AM - 5:30PM",
@@ -197,119 +198,7 @@ export default {
       "7:00PM - 3:30AM"
     ],
     shiftType: ["Manager", "Inshop", "Driver"],
-    monday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-    tuesday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-    wednesday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-    thursday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-    friday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-    saturday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-    sunday: [
-      "JC",
-      "Will",
-      "Elvis",
-      "Rob",
-      "Brandi",
-      "Storey",
-      "David",
-      "Juan",
-      "Aleksei",
-      "Sean",
-      "Amy",
-      "Nathan",
-      "Keegan",
-      "NEED"
-    ],
-
+    
     headers: [
       { text: "Shift Time", align: "left", value: "time" },
       { text: "Shift Type", value: "shiftType" },
@@ -385,6 +274,11 @@ export default {
         });
       });
     });
+    employees.get().then(snapshot => {
+      snapshot.forEach(doc => {
+        this.employees.push(doc.data().name)
+      })
+    })
     this.date1 = this.$moment()
       .startOf("week")
       .format("YYYY-MM-DD");
