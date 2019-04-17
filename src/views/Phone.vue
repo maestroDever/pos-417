@@ -144,12 +144,12 @@
           </td>
           <td>
             <!-- Icon goes to 'views/InshopMenu?orderID=?customerID=' -->
-            <v-icon x-large @click="pickup()">transfer_within_a_station</v-icon>
+            <v-icon x-large @click="pickup(props.item.customerID)">transfer_within_a_station</v-icon>
           </td>
 
           <td>
             <!-- Icon goes to 'views/DeliveryMenu?orderID=?customerID=' -->
-            <v-icon x-large @click="delivery">drive_eta</v-icon>
+            <v-icon x-large @click="delivery()">drive_eta</v-icon>
           </td>
         </template>
       </v-data-table>
@@ -359,11 +359,26 @@ export default {
     customerProfileID(customer_id) {
       this.$router.push("/customerprofile?customerID=" + customer_id);
     },
-    pickup() {
-      
-      router.push({
-        name: 'pickupmenu'
-      })
+    pickup(customerID) {
+      const time = Date.now();
+      let newBuildingOrder = {
+        orderID: "",
+        orderType: "PickUp",
+        customerID: customerID
+      };
+      if (confirm("Are you sure to make a new order?")) {
+        newBuildingOrder.orderID = String(time);
+        buildingOrder
+          .doc(newBuildingOrder.orderID)
+          .set(newBuildingOrder)
+          .then(docRef => {
+            this.$router.push("/pickupmenu?order_id=" + newBuildingOrder.orderID + "&customer_id=" + customerID);
+          })
+          .catch(error => {
+            alert("Error occurs while adding a new buildingOrder");
+            console.log(error);
+          });
+      }
     },
     delivery() {
       router.push({
