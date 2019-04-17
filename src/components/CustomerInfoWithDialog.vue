@@ -99,16 +99,16 @@
             <v-spacer></v-spacer>
             <v-flex>
               <!-- Button -->
-              <v-btn large>
+              <v-btn large @click="pickup">
                 Pickup
                 <!-- Icon goes to 'views/InshopMenu/orderID/customerID' -->
-                <v-icon right large @click="addPickupCustomer">transfer_within_a_station</v-icon>
+                <v-icon right large>transfer_within_a_station</v-icon>
               </v-btn>
 
-              <v-btn large>
+              <v-btn large @click="delivery">
                 Delivery
                 <!-- Icon goes to 'views/DeliveryMenu/orderID/customerID' -->
-                <v-icon right large @click="addDeliveryCustomer">drive_eta</v-icon>
+                <v-icon right large>drive_eta</v-icon>
               </v-btn>
             </v-flex>
           </v-layout>
@@ -120,7 +120,7 @@
 
 <script>
 // import Navdrawer2 from "@/components/Navdrawer/Navdrawer2";
-import { db, customers } from "@/fb";
+import { db, customers, buildingOrder } from "@/fb";
 import CustomerInfoDialog from "@/components/CustomerInfoDialog";
 
 export default {
@@ -161,28 +161,53 @@ export default {
     }
   },
   methods: {
-    addDeliveryCustomer() {
-      this.$router.push("/deliverymenu");
-
-      console.log(newCustomer);
-      db.collection("order")
-        .add(newCustomer)
-        .then(() => {
-          this.dialog = false;
-        });
+    delivery() {
+      console.log('delivery')
+      if(this.customerID) {
+        const time = Date.now();
+        let newBuildingOrder = {
+          orderID: "",
+          orderType: "Delivery",
+          customerID: this.customerID
+        };
+        if (confirm("Are you sure to make a new delivery order?")) {
+          newBuildingOrder.orderID = String(time);
+          buildingOrder
+            .doc(newBuildingOrder.orderID)
+            .set(newBuildingOrder)
+            .then(docRef => {
+              this.$router.push("/deliverymenu?order_id=" + newBuildingOrder.orderID + "&customer_id=" + this.customerID);
+            })
+            .catch(error => {
+              alert("Error occurs while adding a new buildingOrder");
+              console.log(error);
+            });
+        }
+      }    
     },
-    addPickupCustomer() {
-      this.$router.push("/pickupmenu");
-      const newCustomer = {
-        phoneNumber: this.phoneNumber,
-        name: this.name
-      };
-      console.log(newCustomer);
-      db.collection("order")
-        .add(newCustomer)
-        .then(() => {
-          this.dialog = false;
-        });
+    pickup() {
+      console.log('pickup')
+      if(this.customerID) {
+        const time = Date.now();
+        let newBuildingOrder = {
+          orderID: "",
+          orderType: "PickUp",
+          customerID: this.customerID
+        };
+        if (confirm("Are you sure to make a new pickup order?")) {
+          newBuildingOrder.orderID = String(time);
+          buildingOrder
+            .doc(newBuildingOrder.orderID)
+            .set(newBuildingOrder)
+            .then(docRef => {
+              this.$router.push("/pickupmenu?order_id=" + newBuildingOrder.orderID + "&customer_id=" + this.customerID);
+            })
+            .catch(error => {
+              alert("Error occurs while adding a new buildingOrder");
+              console.log(error);
+            });
+        }
+      }
     },
 
     edit() {
