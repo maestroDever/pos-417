@@ -1,0 +1,155 @@
+
+/////
+
+
+
+
+/////
+
+
+
+
+In "components/CurrentOrders" - Edit Order button should open the order in 'views/Menu:orderID' using db to fetch order details.  *Important* 'views/Menu:orderID' must have have all order items and modifications prefilled when loaded (example: If the order had a Tombstone modified with no tomato via dropdown menu, when the order is pulled up, the 'no tomato' dropdown must default to 'no tomato').  Might need to use localstorage or cookies for this.
+
+In "" - On submit, move document from 'buildingOrder' to 'currentOrders'
+
+In "views/CustomerManagement" - Make 'more_horiz' icon pop up a dialog box that will contain "views/CustomerProfile?customer_id=1554787251513" (or "components/CustomerInfo?customer_id=1554787251513").  The dialog box will display the customers data from Firebase with the ability to edit.  
+
+
+// Hassan //
+-----
+"views/Phone" 
+"components/CustomerInfo" (in "views/CustomerProfile")
+
+In "views/ThisWeeksSchedule" / Components: "ScheduleRequests1" and "CheckScheduleRequests" and "CheckScheduleRequests1" - Have the ability to move a document from db collection 'scheduleRequests' to db collection 'oldScheduleRequests', and the other way around.
+
+In "components/CustomerInfo" (in "views/CustomerProfile") - Render customer info from database db collection 'customers' based on customer ID number (this information cannot be edited, only can be edited by using the 'edit customer' button).  Make 'Edit Customer' button pop up a dialog box that gives the ability to edit and save the db document based on the customer ID. 
+
+In "views/Phone" - Customer Profile button should go to 'views/CustomerProfile?customer_id=1554787251513'.  Example: When 'customer profile' is clicked, it will go to the 'views/customerprofile?customerID_XXXXXXXXXX' page and render the customers information into the fields using the customer number to get the customers info.
+
+In "views/Phone" and "components/CustomerInfo" - 'Pickup' icon button routes to to 'views/pickupMenu?customer_id=XXXXXXXXXXXXX/order_id=1554787251513'.  Example: When 'pickup' is clicked, it will create and start a new order in db collection 'buildingOrders' with a new orderID number with the customerID number attached.  When the order is submitted, it will have the customers ID attached so that if you have to look up the order later, you know what customer it was. Or, if you look up the customer, you will want to know what orders they have made.
+
+In "views/Phone" and "components/CustomerInfo" - 'Delivery' icon button routes to to 'views/deliveryMenu?order_id=XXXXXXXXXXXXX/order_id=1554787251513.  Example: When 'delivery' is clicked, it will create and start a new order in db collection 'buildingOrders' with a new orderID number with the customerID number attached.  When the order is submitted, it will have the customers ID attached so that if you have to look up the order later, you know what customer it was. Or, if you look up the customer, you will want to know what orders they have made.
+
+
+
+
+
+-----
+
+
+// Me //
+--
+In "components/PastOrders" - Add 'Status' header and field.  Status will be 'Complete' (order has been submitted, made and delivered to customer either in the store by handing it to them or on a delivery which now makes the order complete), or 'Voided' (order has been submitted, but then 'voided' or removed from 'orders' db collection).
+
+In "views/ThisWeeksSchedule" - Add pop up dialog button with text fields that writes to db collection 'thisWeekScheduleUpdates'/ document 'thisWeekScheduleUpdates'.
+
+In "views/NextWeeksSchedule" - Add pop up dialog button with text fields that writes to db collection 'nextWeekScheduleUpdates'/ document 'nextWeekScheduleUpdates'.
+
+In "views/Schedule" - Render info from db collection 'thisWeekScheduleUpdates'/ document 'thisWeekScheduleUpdates' underneath 'Schedule Updates'.
+
+In "views/Schedule1" - Render info from db collection 'nextWeekScheduleUpdates'/ document 'nextWeekScheduleUpdates' underneath 'Schedule Updates'.
+
+Build Cash and Charge until submit
+
+Time Clock / Time Clock Management
+
+On submit of an order, 'orderID', 'customerID', 'orderTime', 'orderDate, 'orderItems', 'orderTotal', and 'timeElapsed' fields will be added to order in db
+
+--
+
+Delivery
+
+Order Search / Order Management
+
+Block all routes and redirect to "views/Home"
+
+Remove transitions
+
+/////
+
+// DONE //
+In "views/CustomerManagement" - Fix error alert message.  Getting 'error alert' when clicking 'save' after editing.
+
+In "views/StoreDashboard" - Remove large gap and make third and fourth components the same size as the top two components.
+
+In "views/StoreDashboard" - Fix text rendering issue.  Text is not rending until I hit the 'edit' button.
+
+In "views/MainMenu" - Render information from "views/StoreDashboard" (Firebase) using the same format that it is currently in hardcoded.
+
+In "views/Phone" - Make dashes automatically appear when typing in numbers so that the phone number format looks like this '555-555-5555' even without actually keying in the dashes.
+
+In "views/Phone" - Add an (X) icon button on left that clears the search field.
+
+In "views/Phone" - Make dialog pop up title be 'Add New Customer' when button is clicked, and 'Customer Info' 
+
+In "components/CurrentEmployees" - Make 'arrow_downward' button fire two actions when pressed (after confirmation). Action 1 is to copy/save/move the employee information document into the db collection called 'pastEmployees'.  Action 2 would be to delete the employee document from collection 'employees'
+
+In "components/PastEmployees" - Make 'arrow_upward' button fire two actions when pressed (after confirmation). Action 1 is to copy/save/move the employee information document into the db collection called 'employees'.  Action 2 would be to delete the document from db collection 'pastEmployees'
+
+In "components/Navdrawer/AdminNavdrawer" - Add 'drag and drop' capability to be able to re-order the list items.
+
+In "views/Phone" - Add date picker to dialog fields
+
+Add (X), prepend, and md4 to all search fields
+
+In "components/CurrentEmployees -  Fix 'Hire date' date picker, it also must default to current date.
+
+In "components/CurrentEmployees" - Add 'hire and fire date' to dialog box using date-picker.
+
+In "components/CurrentEmployees - 'Active' under 'Status' should be selected by default
+
+In "views/ThisWeeksSchedule" - Fix date picker so that it operates independently from other date picker.  Have 'Submit Dates' button send both date-picker dates to db collection: 'scheduleDates' - document: 'thisWeeksSchedule' - fields: 'date1 and date2'.  Must write over this document everytime dates are submitted.
+
+In "views/NextWeeksSchedule" - Fix date picker so that it operates independently from other date picker.  Have 'Submit Dates' button send both date-picker dates to db collection: 'scheduleDates' - document: 'nextWeeksSchedule' - fields: 'date1 and date2'.  Must write over this document everytime dates are submitted.
+
+In "views/Phone - When a user is typing in the phone number, if no match found, the user will click 'Add New Customer'.  The phone number that was typed into the search field should show in 'phone number' field of pop up dialog box.
+
+In 'views/Inshop' - Currently I have the button set to create a new document inside the buildingOrder collection with a newly created orderID inside the document (you can make that part better if needed).  Now, I need that button to also push/route to 'views/Menu/orderID' where orderID is the newly created ID number. Everytime an order starts, it should get a specific orderID number.
+
+Change ReadMe file title
+
+In "views/schedule" - Render date1 and date2 from db collection 'scheduleDates', document 'thisWeeksSchedule', in the location of the current hardcoded dates.
+
+In "views/schedule1" - Render date1 and date2 from db collection 'scheduleDates', document 'NextWeeksSchedule', in the location of the current hardcoded dates.
+
+In "AdminNavdrawer" - Add 'Add deposit' / 'Switch Shift'
+
+// DONE - HASSAN // -- 03.Apr.19 00:10 ~ 
+
+In Phone.vue >> 
+    phone number search [<v-text-field v-model="search" .. ]
+        added `mask`
+        added `prepend-icon` attri
+        added `@click:prepend` event
+        changed `prepend-icon` to `:prepend-icon` so that it shows when `search` is not empty
+
+In Employeemanagement.vue >>
+    inside <script>
+        all data, method, computed, created .. are deleted --  these are unnecessary
+
+In CurrentEmployees.vue & PastEmployees.vue >>
+    Code cleaned
+    >>
+    in passCode field [<v-text-field v-model="selectedItem.passCode" .. ]
+        added `:append-icon`
+        added `@click:append`
+    in data() { show1: false, }
+
+    in both files >>
+        `this.$emit('upward / downward')` created
+        `selecteItem` method added
+        `deleteItem` method corrected
+
+In EmployeeMangement.vue file
+    `PastEmployees` and `CurrentEmployees` components have @upward/@downward event - that 
+        fires corresponding methods of the parent component
+    When `upward & downward` methods fire, they call child component's method by using
+        this.$refs.past.selectItem ...
+
+In CurrentEmployees.vue & PastEmployees.vue >>
+    a new parameter `source` is added to methods:
+        save() & deleteItem()
+          This is the indicator telling who is calling the method
+          so when a parent calls, certain notificaiton is shown
+        
