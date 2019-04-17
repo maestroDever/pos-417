@@ -149,7 +149,7 @@
 
           <td>
             <!-- Icon goes to 'views/DeliveryMenu?orderID=?customerID=' -->
-            <v-icon x-large @click="delivery()">drive_eta</v-icon>
+            <v-icon x-large @click="delivery(props.item.customerID)">drive_eta</v-icon>
           </td>
         </template>
       </v-data-table>
@@ -366,7 +366,7 @@ export default {
         orderType: "PickUp",
         customerID: customerID
       };
-      if (confirm("Are you sure to make a new order?")) {
+      if (confirm("Are you sure to make a new pickup order?")) {
         newBuildingOrder.orderID = String(time);
         buildingOrder
           .doc(newBuildingOrder.orderID)
@@ -380,10 +380,26 @@ export default {
           });
       }
     },
-    delivery() {
-      router.push({
-        name: "deliverymenu"
-      });
+    delivery(customerID) {
+      const time = Date.now();
+      let newBuildingOrder = {
+        orderID: "",
+        orderType: "Delivery",
+        customerID: customerID
+      };
+      if (confirm("Are you sure to make a new delivery order?")) {
+        newBuildingOrder.orderID = String(time);
+        buildingOrder
+          .doc(newBuildingOrder.orderID)
+          .set(newBuildingOrder)
+          .then(docRef => {
+            this.$router.push("/deliverymenu?order_id=" + newBuildingOrder.orderID + "&customer_id=" + customerID);
+          })
+          .catch(error => {
+            alert("Error occurs while adding a new buildingOrder");
+            console.log(error);
+          });
+      }
     }
 
     // home() {
